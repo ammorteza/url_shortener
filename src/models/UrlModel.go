@@ -1,7 +1,6 @@
 package models
 
 import (
-	"errors"
 	"fmt"
 	"github.com/jinzhu/gorm"
 )
@@ -16,17 +15,17 @@ type UrlModel struct {
 	Model
 }
 
-func (urlModel *UrlModel)Insert(mainUrl string, uniqueHashUrl string) {
+func (urlModel *UrlModel)Insert(mainUrl string, uniqueHashUrl string) error{
 	url := Url{MainUrl: mainUrl, UniqueHashUrl: uniqueHashUrl}
-	urlModel.db.Create(&url)
+	return urlModel.db.Create(&url).Error
 }
 
 func (urlModel *UrlModel)GetMainUrl(uniqueHashUrl string)  (string, error){
 	url := Url{}
 	fmt.Println("hashUrl:" + uniqueHashUrl)
-	urlModel.db.Where("unique_hash_url = ?" , uniqueHashUrl).First(&url)
-	if url.MainUrl == ""{
-		return "" , errors.New("does not exist!")
+	err := urlModel.db.Where("unique_hash_url = ?" , uniqueHashUrl).First(&url).Error
+	if err != nil{
+		return "" , err
 	}
 	return url.MainUrl, nil
 }

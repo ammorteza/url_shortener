@@ -36,19 +36,28 @@ func (c *UrlController)MakeUrl(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil{
 		panic(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write(nil)
+	}else{
+		responseBody.Short_url = "/" + hashedUrl.String()
+
+		if err := urlModel.Insert(requestBody.Base_url, hashedUrl.String()); err != nil{
+			panic(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write(nil)
+		}else{
+			response, err := json.Marshal(responseBody)
+			if err != nil{
+				panic(err)
+				w.WriteHeader(http.StatusInternalServerError)
+				w.Write(nil)
+			}else{
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(http.StatusOK)
+				w.Write(response)
+			}
+		}
 	}
-
-	responseBody.Short_url = "/" + hashedUrl.String()
-
-	urlModel.Insert(requestBody.Base_url, hashedUrl.String())
-	response, err := json.Marshal(responseBody)
-	if err != nil{
-		panic(err)
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(response)
 }
 
 func (c *UrlController)RedirectShortenUrl(w http.ResponseWriter, r *http.Request)  {
