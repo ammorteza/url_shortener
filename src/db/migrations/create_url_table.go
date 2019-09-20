@@ -1,7 +1,7 @@
 package migrations
 
 import (
-	"url-shortener/src/models"
+	"github.com/ammorteza/urlShortener/src/models"
 )
 
 type UrlTableMigration struct {

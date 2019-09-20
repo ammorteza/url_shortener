@@ -1,6 +1,6 @@
 package controllers
 
-import "url-shortener/src/interfaces"
+import "github.com/ammorteza/urlShortener/src/interfaces"
 
 type Controller struct {
 	dbConnection interfaces.DbConnection

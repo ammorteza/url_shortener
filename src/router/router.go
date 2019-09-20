@@ -5,8 +5,8 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
-	"url-shortener/src/controllers"
-	"url-shortener/src/interfaces"
+	"github.com/ammorteza/urlShortener/src/controllers"
+	"github.com/ammorteza/urlShortener/src/interfaces"
 )
 
 type Route struct {

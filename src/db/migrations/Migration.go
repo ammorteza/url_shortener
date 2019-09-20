@@ -2,7 +2,7 @@ package migrations
 
 import (
 	"github.com/jinzhu/gorm"
-	"url-shortener/src/interfaces"
+	"github.com/ammorteza/urlShortener/src/interfaces"
 )
 
 type Migration struct {

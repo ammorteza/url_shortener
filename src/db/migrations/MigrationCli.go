@@ -2,7 +2,7 @@ package migrations
 
 import (
 	"fmt"
-	"url-shortener/src/interfaces"
+	"github.com/ammorteza/urlShortener/src/interfaces"
 )
 
 type MigrationCli struct {

@@ -1,12 +1,12 @@
 package main
 
 import (
+	"github.com/ammorteza/urlShortener/src/db"
+	"github.com/ammorteza/urlShortener/src/db/migrations"
+	"github.com/ammorteza/urlShortener/src/interfaces"
 	"github.com/urfave/cli"
 	"log"
 	"os"
-	"url-shortener/src/db"
-	"url-shortener/src/db/migrations"
-	"url-shortener/src/interfaces"
 )
 
 var app = cli.NewApp()
