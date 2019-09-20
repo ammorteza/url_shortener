@@ -2,13 +2,13 @@ package migrations
 
 import (
 	"fmt"
-	"url-shortener/src/interfaces"
+	"github.com/ammorteza/urlShortener/interfaces"
 )
 
 type MigrationCli struct {
 }
 
-func (m MigrationCli)Make(connection interfaces.DbConnection)  {
+func (m MigrationCli) Make(connection interfaces.DbConnection) {
 	fmt.Println("Migrate all database tables start")
 	////////////////// make url table migration ///////////////////
 	fmt.Println("Migrate urlTableMigration file ...")
@@ -19,7 +19,7 @@ func (m MigrationCli)Make(connection interfaces.DbConnection)  {
 	///////////////////////////////////////////////////////////////
 }
 
-func (m MigrationCli)Reset(connection interfaces.DbConnection)  {
+func (m MigrationCli) Reset(connection interfaces.DbConnection) {
 	fmt.Println("Resetting all database tables start")
 	////////////////// make url table migration ///////////////////
 	fmt.Println("Reset urlTable ...")

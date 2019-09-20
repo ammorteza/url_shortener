@@ -1,4 +1,4 @@
-module url-shortener
+module github.com/ammorteza/urlShortener
 
 go 1.12
 

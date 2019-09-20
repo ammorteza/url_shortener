@@ -1,11 +1,11 @@
 package main
 
 import (
-	"url-shortener/src/db"
-	"url-shortener/src/router"
+	"github.com/ammorteza/urlShortener/db"
+	"github.com/ammorteza/urlShortener/router"
 )
 
-func main()  {
+func main() {
 	_router := router.Router{}
 	_router.Start(db.MysqlConnection{})
 }
