@@ -4,10 +4,10 @@ import (
 	"net/http"
 )
 
-type MainController struct{
+type MainController struct {
 	Controller
 }
 
-func (c *MainController)MainUrl(w http.ResponseWriter, r *http.Request) {
+func (c *MainController) MainUrl(w http.ResponseWriter, r *http.Request) {
 
 }

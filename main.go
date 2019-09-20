@@ -5,7 +5,7 @@ import (
 	"github.com/ammorteza/urlShortener/router"
 )
 
-func main()  {
+func main() {
 	_router := router.Router{}
 	_router.Start(db.MysqlConnection{})
 }
