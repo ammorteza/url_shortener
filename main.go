@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/ammorteza/urlShortener/src/db"
-	"github.com/ammorteza/urlShortener/src/router"
+	"github.com/ammorteza/urlShortener/db"
+	"github.com/ammorteza/urlShortener/router"
 )
 
 func main()  {

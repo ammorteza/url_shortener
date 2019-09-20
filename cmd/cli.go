@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/ammorteza/urlShortener/src/db"
-	"github.com/ammorteza/urlShortener/src/db/migrations"
-	"github.com/ammorteza/urlShortener/src/interfaces"
+	"github.com/ammorteza/urlShortener/db"
+	"github.com/ammorteza/urlShortener/db/migrations"
+	"github.com/ammorteza/urlShortener/interfaces"
 	"github.com/urfave/cli"
 	"log"
 	"os"

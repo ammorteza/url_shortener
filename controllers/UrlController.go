@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
-	"github.com/ammorteza/urlShortener/src/models"
+	"github.com/ammorteza/urlShortener/models"
 	"github.com/nu7hatch/gouuid"
 )
 

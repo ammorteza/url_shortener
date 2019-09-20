@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/jinzhu/gorm"
-	"github.com/ammorteza/urlShortener/src/interfaces"
+	"github.com/ammorteza/urlShortener/interfaces"
 )
 
 type Model struct {
