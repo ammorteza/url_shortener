@@ -1,4 +1,4 @@
-run:
+compose:
 	sudo docker-compose up --build
 
 db_migrate:

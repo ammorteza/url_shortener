@@ -2,8 +2,8 @@ package router
 
 import (
 	"fmt"
-	"github.com/ammorteza/urlShortener/controllers"
-	"github.com/ammorteza/urlShortener/interfaces"
+	"github.com/ammorteza/url_shortener/controllers"
+	"github.com/ammorteza/url_shortener/interfaces"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"

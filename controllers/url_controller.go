@@ -3,7 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/ammorteza/urlShortener/models"
+	"github.com/ammorteza/url_shortener/models"
 	"github.com/gorilla/mux"
 	"github.com/nu7hatch/gouuid"
 	"net/http"

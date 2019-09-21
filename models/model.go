@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/ammorteza/urlShortener/interfaces"
+	"github.com/ammorteza/url_shortener/interfaces"
 	"github.com/jinzhu/gorm"
 )
 
