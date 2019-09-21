@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/ammorteza/url_shortener/db"
 	"github.com/ammorteza/url_shortener/db/migrations"
-	"github.com/ammorteza/url_shortener/interfaces"
 	"github.com/ammorteza/url_shortener/router"
 	"github.com/urfave/cli"
 	"log"
@@ -11,7 +10,7 @@ import (
 )
 
 var app = cli.NewApp()
-var dbConnection interfaces.DbConnection
+var dbConnection db.DbConnection
 
 func initDnConnection() {
 	dbConnection = db.MysqlConnection{}
@@ -38,7 +37,7 @@ func commands() {
 			Name:  "db:migrate",
 			Usage: "migrate all database migration files",
 			Action: func(c *cli.Context) {
-				var migration interfaces.MigrationCliInterface = migrations.MigrationCli{}
+				var migration migrations.MigrationCliInterface = migrations.MigrationCli{}
 				migration.Make(dbConnection)
 			},
 		},
@@ -46,7 +45,7 @@ func commands() {
 			Name:  "db:reset",
 			Usage: "reset all database tables",
 			Action: func(c *cli.Context) {
-				var migration interfaces.MigrationCliInterface = migrations.MigrationCli{}
+				var migration migrations.MigrationCliInterface = migrations.MigrationCli{}
 				migration.Reset(dbConnection)
 			},
 		},

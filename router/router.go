@@ -3,7 +3,7 @@ package router
 import (
 	"fmt"
 	"github.com/ammorteza/url_shortener/controllers"
-	"github.com/ammorteza/url_shortener/interfaces"
+	"github.com/ammorteza/url_shortener/db"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -18,7 +18,7 @@ type Route struct {
 type Router struct {
 	router       *mux.Router
 	routes       []Route
-	dbConnection interfaces.DbConnection
+	dbConnection db.DbConnection
 }
 
 func (r *Router) makeRoutes() {
@@ -52,11 +52,11 @@ func (r *Router) makeRoutes() {
 	}
 }
 
-func (r *Router) setDbConnection(dbConnection interfaces.DbConnection) {
+func (r *Router) setDbConnection(dbConnection db.DbConnection) {
 	r.dbConnection = dbConnection
 }
 
-func (r *Router) Start(dbConnection interfaces.DbConnection) {
+func (r *Router) Start(dbConnection db.DbConnection) {
 	r.setDbConnection(dbConnection)
 	r.router = mux.NewRouter().StrictSlash(true)
 	r.makeRoutes()

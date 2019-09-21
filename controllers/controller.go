@@ -1,11 +1,13 @@
 package controllers
 
-import "github.com/ammorteza/url_shortener/interfaces"
+import (
+	"github.com/ammorteza/url_shortener/db"
+)
 
 type Controller struct {
-	dbConnection interfaces.DbConnection
+	dbConnection db.DbConnection
 }
 
-func (c *Controller) Init(dbConnect interfaces.DbConnection) {
+func (c *Controller) Init(dbConnect db.DbConnection) {
 	c.dbConnection = dbConnect
 }
