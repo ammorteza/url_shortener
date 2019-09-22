@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/ammorteza/url_shortener/db"
 	"github.com/ammorteza/url_shortener/models"
 	"github.com/gorilla/mux"
 	"github.com/nu7hatch/gouuid"
@@ -21,9 +22,14 @@ type responseBody struct {
 	Short_url string `json:"shorter_url"`
 }
 
+func NewUrlController(connection db.DbConnection) *UrlController{
+	urlController := &UrlController{}
+	urlController.dbConnection = connection
+	return urlController
+}
+
 func (c *UrlController) MakeUrl(w http.ResponseWriter, r *http.Request) {
-	urlModel := models.UrlModel{}
-	urlModel.Init(c.dbConnection)
+	urlModel := models.NewUrlModel(c.dbConnection)
 
 	requestBody := requestBody{}
 	err := json.NewDecoder(r.Body).Decode(&requestBody)
@@ -61,9 +67,7 @@ func (c *UrlController) MakeUrl(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *UrlController) RedirectShortenUrl(w http.ResponseWriter, r *http.Request) {
-	urlModel := models.UrlModel{}
-	urlModel.Init(c.dbConnection)
-
+	urlModel := models.NewUrlModel(c.dbConnection)
 	vars := mux.Vars(r)
 	mainUrl, err := urlModel.GetMainUrl(vars["unique_url_id"])
 	if err != nil {

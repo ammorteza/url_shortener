@@ -29,24 +29,24 @@ func commands() {
 			Name:  "router:start",
 			Usage: "start router",
 			Action: func(c *cli.Context) {
-				_router := router.Router{}
-				_router.Start(db.MysqlConnection{})
+				_router := router.New(db.MysqlConnection{})
+				_router.Start()
 			},
 		},
 		{
 			Name:  "db:migrate",
 			Usage: "migrate all database migration files",
 			Action: func(c *cli.Context) {
-				var migration migrations.MigrationCliInterface = migrations.MigrationCli{}
-				migration.Make(dbConnection)
+				migration := migrations.NewMigrate(dbConnection)
+				migration.Make()
 			},
 		},
 		{
 			Name:  "db:reset",
 			Usage: "reset all database tables",
 			Action: func(c *cli.Context) {
-				var migration migrations.MigrationCliInterface = migrations.MigrationCli{}
-				migration.Reset(dbConnection)
+				migration := migrations.NewMigrate(dbConnection)
+				migration.Reset()
 			},
 		},
 	}

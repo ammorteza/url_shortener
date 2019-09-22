@@ -21,14 +21,13 @@ type Router struct {
 	dbConnection db.DbConnection
 }
 
-func (r *Router) makeRoutes() {
-	var urlController controllers.UrlController
-	urlController.Init(r.dbConnection)
+func New(connection db.DbConnection) *Router{
+	router := &Router{}
+	router.dbConnection = connection
+	urlController := controllers.NewUrlController(connection)
+	mainController := controllers.NewMainController(connection)
 
-	var mainController controllers.MainController
-	mainController.Init(r.dbConnection)
-
-	r.routes = []Route{
+	router.routes = []Route{
 		{
 			path:    "/{unique_url_id}",
 			method:  "GET",
@@ -45,21 +44,19 @@ func (r *Router) makeRoutes() {
 			handler: mainController.MainUrl,
 		},
 	}
+	return router
+}
 
+func (r *Router)buildRoute()  {
 	for _, route := range r.routes {
 		r.router.HandleFunc(route.path, route.handler).Methods(route.method)
 		fmt.Println(route)
 	}
 }
 
-func (r *Router) setDbConnection(dbConnection db.DbConnection) {
-	r.dbConnection = dbConnection
-}
-
-func (r *Router) Start(dbConnection db.DbConnection) {
-	r.setDbConnection(dbConnection)
+func (r *Router) Start() {
 	r.router = mux.NewRouter().StrictSlash(true)
-	r.makeRoutes()
+	r.buildRoute()
 	fmt.Println("start http connection at 8080 tcp port")
 	log.Fatal(http.ListenAndServe(":8080", r.router))
 }

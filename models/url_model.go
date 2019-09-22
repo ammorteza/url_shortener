@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"github.com/ammorteza/url_shortener/db"
 	"github.com/jinzhu/gorm"
 )
 
@@ -13,6 +14,12 @@ type Url struct {
 
 type UrlModel struct {
 	Model
+}
+
+func NewUrlModel(connection db.DbConnection)  *UrlModel{
+	urlModel := &UrlModel{}
+	urlModel.db = connection.Connect()
+	return urlModel
 }
 
 func (urlModel *UrlModel) Insert(mainUrl string, uniqueHashUrl string) error {
