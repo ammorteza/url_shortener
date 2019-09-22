@@ -15,7 +15,9 @@ COPY . .
 
 #build the go app
 RUN go build main.go
-RUN go build Cli.go
+RUN cd cmd/
+RUN go build -o ../Cli
+RUN cd ..
 
 #expose port 8080 to real world
 EXPOSE 8080

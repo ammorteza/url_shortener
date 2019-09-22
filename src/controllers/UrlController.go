@@ -17,7 +17,7 @@ type requestBody struct {
 	Base_url string `json:"base_url"`
 }
 
-type responseBody struct {
+type ResponseBody struct {
 	Short_url string `json:"shorter_url"`
 } 
 
@@ -31,7 +31,7 @@ func (c *UrlController)MakeUrl(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	responseBody := responseBody{}
+	responseBody := ResponseBody{}
 	hashedUrl, err := uuid.NewV4()
 
 	if err != nil{

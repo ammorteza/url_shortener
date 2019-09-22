@@ -6,3 +6,6 @@ db_migrate:
 
 db_reset:
 	sudo docker exec urlshortener_go ./Cli db:reset
+
+test:
+	sudo docker exec urlshortener_go go test
