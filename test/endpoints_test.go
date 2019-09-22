@@ -1,24 +1,23 @@
-package tests
+package test
 
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"url-shortener/src/controllers"
-	"url-shortener/src/db"
-	"url-shortener/src/interfaces"
+	"github.com/ammorteza/url_shortener/controllers"
+	"github.com/ammorteza/url_shortener/db"
 )
 
-func getDbConnection() interfaces.DbConnection{
-	var dbConnection interfaces.DbConnection = db.MysqlConnection{}
+func getDbConnection() db.DbConnection{
+	var dbConnection db.DbConnection = db.MysqlConnection{}
 	return dbConnection
 }
 
 func TestMakeUrl(t *testing.T){
-	urlController := controllers.UrlController{}
-	urlController.Init(getDbConnection())
+	urlController := controllers.NewUrlController(getDbConnection())
 
 	var jsonRequest = []byte(`{"base_url" : "/url/new/make"}`)
 	req, err := http.NewRequest("POST" , "/url/shorten/make", bytes.NewBuffer(jsonRequest))
@@ -32,7 +31,7 @@ func TestMakeUrl(t *testing.T){
 	handler.ServeHTTP(rtr, req)
 
 	var responseJson controllers.ResponseBody
-	if err := json.Unmarshal([]byte(rtr.Body.String()), responseJson); err != nil{
+	if err := json.Unmarshal([]byte(rtr.Body.String()), &responseJson); err != nil{
 		t.Fatal(err)
 	}
 

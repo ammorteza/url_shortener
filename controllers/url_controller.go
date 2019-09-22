@@ -3,13 +3,14 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/ammorteza/url_shortener/db"
+	"github.com/ammorteza/url_shortener/models"
 	"github.com/gorilla/mux"
-	"net/http"
-	"url-shortener/src/models"
 	"github.com/nu7hatch/gouuid"
+	"net/http"
 )
 
-type UrlController struct{
+type UrlController struct {
 	Controller
 }
 
@@ -18,40 +19,45 @@ type requestBody struct {
 }
 
 type ResponseBody struct {
-	Short_url string `json:"shorter_url"`
-} 
+	Short_url string `json:"short_url"`
+}
 
-func (c *UrlController)MakeUrl(w http.ResponseWriter, r *http.Request) {
-	urlModel := models.UrlModel{}
-	urlModel.Init(c.dbConnection)
+func NewUrlController(connection db.DbConnection) *UrlController{
+	urlController := &UrlController{}
+	urlController.dbConnection = connection
+	return urlController
+}
+
+func (c *UrlController) MakeUrl(w http.ResponseWriter, r *http.Request) {
+	urlModel := models.NewUrlModel(c.dbConnection)
 
 	requestBody := requestBody{}
 	err := json.NewDecoder(r.Body).Decode(&requestBody)
-	if err != nil{
+	if err != nil {
 		panic(err)
 	}
 
 	responseBody := ResponseBody{}
 	hashedUrl, err := uuid.NewV4()
 
-	if err != nil{
+	if err != nil {
 		panic(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write(nil)
-	}else{
+	} else {
 		responseBody.Short_url = "/" + hashedUrl.String()
 
-		if err := urlModel.Insert(requestBody.Base_url, hashedUrl.String()); err != nil{
+		if err := urlModel.Insert(requestBody.Base_url, hashedUrl.String()); err != nil {
 			panic(err)
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write(nil)
-		}else{
+		} else {
 			response, err := json.Marshal(responseBody)
-			if err != nil{
+			if err != nil {
 				panic(err)
 				w.WriteHeader(http.StatusInternalServerError)
 				w.Write(nil)
-			}else{
+			} else {
 				w.Header().Set("Content-Type", "application/json")
 				w.WriteHeader(http.StatusOK)
 				w.Write(response)
@@ -60,13 +66,11 @@ func (c *UrlController)MakeUrl(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (c *UrlController)RedirectShortenUrl(w http.ResponseWriter, r *http.Request)  {
-	urlModel := models.UrlModel{}
-	urlModel.Init(c.dbConnection)
-
+func (c *UrlController) RedirectShortenUrl(w http.ResponseWriter, r *http.Request) {
+	urlModel := models.NewUrlModel(c.dbConnection)
 	vars := mux.Vars(r)
 	mainUrl, err := urlModel.GetMainUrl(vars["unique_url_id"])
-	if err != nil{
+	if err != nil {
 		panic(err)
 	}
 	fmt.Println(mainUrl)
