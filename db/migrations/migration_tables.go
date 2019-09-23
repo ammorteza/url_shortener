@@ -15,20 +15,32 @@ func NewMigrate(connection db.DbConnection) *MigrateTables{
 	return &migrateTable
 }
 
-func (mt *MigrateTables)Make() {
+func (mt *MigrateTables)Make() error{
 	fmt.Println("start tables migration")
 	//////////// url model /////////////////
-	urlTable := NewUrlTableMigration(mt.dbConnection)
-	urlTable.Make()
+	urlTable, err := NewUrlTableMigration(mt.dbConnection)
+	if err != nil{
+		return err
+	}
+	if err := urlTable.Make(); err != nil{
+		return err
+	}
 	////////////////////////////////////////
 	fmt.Println("finished tables migration")
+	return nil
 }
 
-func (mt *MigrateTables)Reset() {
+func (mt *MigrateTables)Reset() error{
 	fmt.Println("start tables reset")
 	//////////// url model /////////////////
-	urlTable := NewUrlTableMigration(mt.dbConnection)
-	urlTable.Reset()
+	urlTable,err := NewUrlTableMigration(mt.dbConnection)
+	if err != nil{
+		return err
+	}
+	if err := urlTable.Reset(); err != nil{
+		return err
+	}
 	////////////////////////////////////////
 	fmt.Println("finished tables reset")
+	return nil
 }

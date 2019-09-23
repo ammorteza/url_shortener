@@ -29,7 +29,7 @@ func commands() {
 			Name:  "router:start",
 			Usage: "start router",
 			Action: func(c *cli.Context) {
-				_router := router.New(db.MysqlConnection{})
+				_router := router.New(dbConnection)
 				_router.Start()
 			},
 		},
@@ -38,7 +38,9 @@ func commands() {
 			Usage: "migrate all database migration files",
 			Action: func(c *cli.Context) {
 				migration := migrations.NewMigrate(dbConnection)
-				migration.Make()
+				if err := migration.Make(); err != nil{
+					log.Fatal(err)
+				}
 			},
 		},
 		{
@@ -46,7 +48,9 @@ func commands() {
 			Usage: "reset all database tables",
 			Action: func(c *cli.Context) {
 				migration := migrations.NewMigrate(dbConnection)
-				migration.Reset()
+				if err := migration.Reset(); err != nil{
+					log.Fatal(err)
+				}
 			},
 		},
 	}

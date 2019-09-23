@@ -3,5 +3,5 @@ package db
 import "github.com/jinzhu/gorm"
 
 type DbConnection interface {
-	Connect() *gorm.DB
+	Connect() (*gorm.DB, error)
 }

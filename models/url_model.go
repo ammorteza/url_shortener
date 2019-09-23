@@ -16,10 +16,11 @@ type UrlModel struct {
 	Model
 }
 
-func NewUrlModel(connection db.DbConnection)  *UrlModel{
+func NewUrlModel(connection db.DbConnection) (*UrlModel, error){
 	urlModel := &UrlModel{}
-	urlModel.db = connection.Connect()
-	return urlModel
+	dbConnection, err := connection.Connect()
+	urlModel.db = dbConnection
+	return urlModel, err
 }
 
 func (urlModel *UrlModel) Insert(mainUrl string, uniqueHashUrl string) error {

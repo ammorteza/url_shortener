@@ -50,7 +50,6 @@ func New(connection db.DbConnection) *Router{
 func (r *Router)buildRoute()  {
 	for _, route := range r.routes {
 		r.router.HandleFunc(route.path, route.handler).Methods(route.method)
-		fmt.Println(route)
 	}
 }
 

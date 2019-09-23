@@ -1,7 +1,7 @@
 package migrations
 
 type MigrationInterface interface {
-	Make()
-	Drop()
-	Reset()
+	Make() error
+	Drop() error
+	Reset() error
 }

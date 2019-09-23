@@ -2,11 +2,11 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/ammorteza/url_shortener/db"
 	"github.com/ammorteza/url_shortener/models"
 	"github.com/gorilla/mux"
 	"github.com/nu7hatch/gouuid"
+	"log"
 	"net/http"
 )
 
@@ -29,50 +29,61 @@ func NewUrlController(connection db.DbConnection) *UrlController{
 }
 
 func (c *UrlController) MakeUrl(w http.ResponseWriter, r *http.Request) {
-	urlModel := models.NewUrlModel(c.dbConnection)
-
-	requestBody := requestBody{}
-	err := json.NewDecoder(r.Body).Decode(&requestBody)
-	if err != nil {
-		panic(err)
-	}
-
-	responseBody := ResponseBody{}
-	hashedUrl, err := uuid.NewV4()
-
-	if err != nil {
-		panic(err)
+	urlModel, err := models.NewUrlModel(c.dbConnection)
+	if err != nil{
+		log.Fatal(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write(nil)
-	} else {
-		responseBody.Short_url = "/" + hashedUrl.String()
-
-		if err := urlModel.Insert(requestBody.Base_url, hashedUrl.String()); err != nil {
-			panic(err)
+	}else{
+		requestBody := requestBody{}
+		err = json.NewDecoder(r.Body).Decode(&requestBody)
+		if err = json.NewDecoder(r.Body).Decode(&requestBody); err != nil {
+			log.Fatal(err)
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write(nil)
-		} else {
-			response, err := json.Marshal(responseBody)
+		}else{
+			responseBody := ResponseBody{}
+			hashedUrl, err := uuid.NewV4()
+
 			if err != nil {
-				panic(err)
+				log.Fatal(err)
 				w.WriteHeader(http.StatusInternalServerError)
 				w.Write(nil)
 			} else {
-				w.Header().Set("Content-Type", "application/json")
-				w.WriteHeader(http.StatusOK)
-				w.Write(response)
+				responseBody.Short_url = "/" + hashedUrl.String()
+
+				if err := urlModel.Insert(requestBody.Base_url, hashedUrl.String()); err != nil {
+					log.Fatal(err)
+					w.WriteHeader(http.StatusInternalServerError)
+					w.Write(nil)
+				} else {
+					response, err := json.Marshal(responseBody)
+					if err != nil {
+						log.Fatal(err)
+						w.WriteHeader(http.StatusInternalServerError)
+						w.Write(nil)
+					} else {
+						w.Header().Set("Content-Type", "application/json")
+						w.WriteHeader(http.StatusOK)
+						w.Write(response)
+					}
+				}
 			}
 		}
 	}
 }
 
 func (c *UrlController) RedirectShortenUrl(w http.ResponseWriter, r *http.Request) {
-	urlModel := models.NewUrlModel(c.dbConnection)
-	vars := mux.Vars(r)
-	mainUrl, err := urlModel.GetMainUrl(vars["unique_url_id"])
-	if err != nil {
-		panic(err)
+	urlModel, err := models.NewUrlModel(c.dbConnection)
+	if err != nil{
+		w.WriteHeader(http.StatusInternalServerError)
+	}else{
+		vars := mux.Vars(r)
+		mainUrl, err := urlModel.GetMainUrl(vars["unique_url_id"])
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+		}else{
+			http.Redirect(w, r, mainUrl, http.StatusSeeOther)
+		}
 	}
-	fmt.Println(mainUrl)
-	http.Redirect(w, r, mainUrl, http.StatusSeeOther)
 }
