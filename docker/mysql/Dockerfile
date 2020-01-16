@@ -1,4 +1,4 @@
-#start from the latest golang image
+#start from the latest mysql image
 FROM mysql:latest
 
 EXPOSE 3306
